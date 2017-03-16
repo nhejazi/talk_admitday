@@ -1,29 +1,7 @@
-# Biomarker Discovery with Influence Curve Shrinkage [![MIT license](http://img.shields.io/badge/license-MIT-brightgreen.svg)](http://opensource.org/licenses/MIT)
+# Biostatistics Admit Day Talk [![MIT license](http://img.shields.io/badge/license-MIT-brightgreen.svg)](http://opensource.org/licenses/MIT)
 
-> Materials for a presentation given at a meeting of the Division of
-> Biostatistics seminar series, at the University of California, Berkeley
-
----
-
-## Summary
-
-Brief description here...
-
----
-
-## References
-
-* ...
-
-* ...
-
----
-
-## Acknowledgements
-
-This work would not have been possible without the generous advice of Profs.
-[Alan E. Hubbard](http://hubbard.berkeley.edu) and
-[Mark J. van der Laan](https://www.stat.berkeley.edu/~laan/).
+> Materials for a presentation given to newly admitted graduate students in the
+> Division of Biostatistics, at the University of California, Berkeley
 
 ---
 
