@@ -1,19 +1,21 @@
 ---
-title: Targeted Learning for Biomarker Discovery
-author: Nima Hejazi
-date: 20 March 2017
+title: "Targeted Biomarker Discovery"
+subtitle: "Biostatistics Admit Day"
+author: "[Nima Hejazi](http://nimahejazi.org)"
+date: "20 March 2017"
 output:
   xaringan::moon_reader:
     lib_dir: libs
+    chakra: libs/remark-latest.min.js
     css: ["default", "custom.css"]
     nature:
       highlightStyle: zenburn
       highlightLines: true
 ---
 
-```{r knitr_setup, echo=FALSE}
-knitr::opts_chunk$set(fig.width = 8, fig.height = 6,
-					  dpi = 300, fig.cap="", fig.align='center')
+```{r knitr_setup, echo=FALSE, message=FALSE}
+knitr::opts_chunk$set(fig.width = 7, fig.height = 4.5,
+					  dpi = 300, fig.cap = "", fig.align = "center")
 showtext::showtext.opts(dpi = 300)
 ```
 
@@ -23,300 +25,321 @@ showtext::showtext.opts(dpi = 300)
 ### Via git:
 
 ```{bash, eval=FALSE}
-git clone https://github.com/saraemoore/Rdataviz2017.git
+git clone https://github.com/nhejazi/talk_admitday.git
 ```
 
-### Download directly:
-https://github.com/saraemoore/Rdataviz2017/archive/master.zip
-
 ### View online:
-http://saraemoore.github.io/Rdataviz2017
+https://goo.gl/HZzosu
 
 ???
 
-* I won't be showing all the code on the slides today, but it's all available in the R Markdown document used to create these slides in this repository on github.
+- This talk will focus on challenges in analyzing high-dimensional biological
+data, with a brief introduction to common problems.
+
+- We will look at how standard approaches from statistical causal inference
+(esp., _Targeted Learning_) can be extended to this class of data.
 
 ---
 class: inverse, center, middle
 
-# Get Started
+# Statistics in High-Dimensional Biology
 
 ---
 
-# Hello World
+# Biological Sequencing Data
 
-Install the **xaringan** package from [Github](https://github.com/yihui/xaringan):
+- lots of data is constantly collected at the sequencing level...
 
-```{r eval=FALSE, tidy=FALSE}
-devtools::install_github("yihui/xaringan")
+- experiments in health sciences, epidemiology...
+
+--
+
+- Popular biotechnology: (1) Microarrays, (2) RNA-Seq, (3) Single-Cell RNA-Seq
+
+- Querying different genomic processes: (1) DNA/RNA expression, (2) Protein
+expression, (3) Epigenetics: DNA Methylation
+
+???
+
+- There are numerous challenges in analyzing such data sets.
+
+- High-dimensional? $n \in (5, 200)$, $g \in (10000, 850000)$
+
+- one more talking point...
+
+---
+
+# Central Dogma of Molecular Biology
+
+- image here
+
+???
+
+- Why do we care about DNA, RNA, etc.?
+
+- talking point...
+
+- talking point...
+
+---
+
+# Statistical Issues in Genomics
+
+Standard data matrix  vs. Genomic data matrix:
+
+$\begin{bmatrix} x_{11} & x_{12} & x_{13} & \dots & x_{1g} \\ x_{21} & x_{22} & x_{23} & \dots & x_{2g} \\ \vdots & \vdots & \vdots & \ddots & \vdots \\ x_{n1} & x_{n2} & x_{n3} & \dots & x_{ng} \end{bmatrix} \xrightarrow[]{\text{transpose}} \begin{bmatrix} x_{11} & x_{12} & x_{13} & \dots & x_{1n} \\ x_{21} & x_{22} & x_{23} & \dots & x_{2n} \\ \vdots & \vdots & \vdots & \ddots & \vdots \\ x_{g1} & x_{g2} & x_{g3} & \dots & x_{gn} \end{bmatrix}$
+
+__n.b.__, $n << g$
+
+--
+
+- standard practice: _subjects in rows, genes in columns_
+
+- genomics standards: _genes in rows, subjects in columns_
+
+--
+
+- Wait, why did we transpose this matrix weirdly?
+
+- Why this aweful convention? 
+
+--
+
+- Thanks, Microsoft (Excel)...
+
+???
+
+- talking point...
+
+- talking point...
+
+- talking point...
+
+---
+
+# Targeted Learning
+
+- A: exposure/treatment (e.g., benzene)
+
+- Y: outcome of interest (e.g., gene expression)
+
+- W: baseline variables (e.g., age, sex, SES)
+
+--
+
+- __goal:__ estimate the effect of a treatment (A) on an outcome (Y) while
+controlling for baseline covariates (W)
+
+- causal inference and variable importance
+
+--
+
+- target parameters like the "average treatment effect" (ATE):
+
+$$\Psi(P_n^*) = E[E[Y \mid A = 1, W] - E[Y \mid A = 0, W]]$$
+
+???
+
+- talking points
+
+- talking points
+
+- talking points
+
+---
+
+# R package: `biotmle`
+
+```{r, eval=FALSE}
+library(devtools)
+devtools::install_github("nhejazi/biotmle")
 ```
 
---
+- what does this package do?
 
-You are recommended to use the [RStudio IDE](https://www.rstudio.com/products/rstudio/), but you do not have to.
+- who cares?
 
-- Create a new R Markdown document from the menu `File -> New File -> R Markdown -> From Template -> Ninja Presentation`;<sup>1</sup>
+???
 
---
+- talking point
 
-- Click the `Knit` button to compile it;
-
---
-
-- or use the [RStudio Addin](https://rstudio.github.io/rstudioaddins/)<sup>2</sup> "Infinite Moon Reader" to live preview the slides (every time you update and save the Rmd document, the slides will be automatically reloaded in RStudio Viewer.
-
-.footnote[
-[1] 中文用户请看[这份教程](http://slides.yihui.name/xaringan/zh-CN.html)
-
-[2] See [#2](https://github.com/yihui/xaringan/issues/2) if you do not see the template or addin in RStudio.
-]
-
----
-
-# Hello Ninja
-
-As a presentation ninja, you certainly should not be satisfied by the "Hello World" example. You need to understand more about two things:
-
-1. The [remark.js](https://remarkjs.com) library;
-
-1. The **xaringan** package;
-
-Basically **xaringan** injected the chakra of R Markdown (minus Pandoc) into **remark.js**. The slides are rendered by remark.js in the web browser, and the Markdown source needed by remark.js is generated from R Markdown (**knitr**).
-
----
-
-# remark.js
-
-You can see an introduction of remark.js from [its homepage](https://remarkjs.com). You should read the [remark.js Wiki](https://github.com/gnab/remark/wiki) at least once to know how to
-
-- create a new slide (Markdown syntax<sup>*</sup> and slide properties);
-
-- format a slide (e.g. text alignment);
-
-- configure the slideshow;
-
-- and use the presentation (keyboard shortcuts).
-
-It is important to be familiar with remark.js before you can understand the options in **xaringan**.
-
-.footnote[[*] It is different with Pandoc's Markdown! It is limited but should be enough for presentation purporses. Come on... You do not need a slide for the Table of Contents! Well, the Markdown support in remark.js [may be improved](https://github.com/gnab/remark/issues/142) in the future.]
+- talking point
 
 ---
 class: inverse, middle, center
 
-# Using xaringan
+# Data Analysis with `biotmle`
 
 ---
 
-# xaringan
+# Explore the data set
 
-Provides an R Markdown output format `xaringan::moon_reader` as a wrapper for remark.js, and you can use it in the YAML metadata, e.g.
-
-```yaml
----
-title: "A Cool Presentation"
-output:
-  xaringan::moon_reader
-    yolo: true
-    nature:
-      autoplay: 30000
----
+```{r}
+library(dplyr)
+library(biotmle)
+data(illuminaData)
 ```
 
-See the help page `?xaringan::moon_reader` for all possible options that you can use.
-
----
-
-# remark.js vs xaringan
-
-Some differences between using remark.js (left) and using **xaringan** (right):
-
-.pull-left[
-1. Start with a boilerplate HTML file;
-
-1. Plain Markdown;
-
-1. Write JavaScript to autoplay slides;
-
-1. Manually configure MathJax;
-
-1. Highlight code with `*`;
-
-1. Edit Markdown source and refresh browser to see updated slides;
-]
-
-.pull-right[
-1. Start with an R Markdown document;
-
-1. R Markdown (can embed R/other code chunks);
-
-1. Provide an option `autoplay`;
-
-1. MathJax just works;<sup>*</sup>
-
-1. Highlight code with `{{}}`;
-
-1. The RStudio addin "Infinite Moon Reader" automatically refreshes slides on changes;
-]
-
-.footnote[[*] Not really. See next page.]
-
----
-
-# Math Expressions
-
-You can write LaTeX math expressions inside a pair of dollar signs, e.g. &#36;\alpha+\beta$ renders $\alpha+\beta$. You can use the display style with double dollar signs:
-
-```
-$$ math $$
+```{r, echo=FALSE}
+"%ni%" = Negate("%in%")
+subjIDs <- illuminaData$id
 ```
 
-$$\bar{X}=\frac{1}{n}\sum_{i=1}^nX_i$$
+- load the data set
 
-Limitations:
+- ...
 
-1. The source code of a LaTeX math expression must be in one line;
+???
 
-1. There should not be spaces after the opening `$` or before the closing `$`.
+- This isn't too important, just click through
 
 ---
 
-# R Code
+# Baseline covariates (W)
 
-```{r comment='#'}
-# a boring regression
-fit = lm(dist ~ 1 + speed, data = cars)
-coef(summary(fit))
-dojutsu = c('地爆天星', '天照', '加具土命', '神威', '須佐能乎', '無限月読')
-grep('天', dojutsu, value = TRUE)
+```{r}
+# W - age, sex, smoking
+W <- illuminaData %>%
+  dplyr::select(which(colnames(.) %in% c("age", "sex", "smoking"))) %>%
+  dplyr::mutate(
+    age = as.numeric((age > quantile(age, 0.25))),
+    sex = I(sex),
+    smoking = I(smoking)
+  )
+head(W)
+```
+
+???
+
+- talking point
+
+- talking point
+
+---
+
+# Exposure of interest (A)
+
+```{r}
+# A - benzene exposure (discretized)
+A <- illuminaData %>%
+  dplyr::select(which(colnames(.) %in% c("benzene")))
+A <- A[, 1]
+unique(A)
+table(A)
+```
+
+???
+
+- talking
+
+- talking
+
+---
+
+# Outcome of interest (Y)
+
+```{r}
+# Y - genes
+Y <- illuminaData %>%
+  dplyr::select(which(colnames(.) %ni% c("age", "sex", "smoking", "benzene",
+                                         "id")))
+geneIDs <- colnames(Y)
+dim(Y)
+head(Y[, 1:7])
+```
+
+???
+
+- expression measures
+
+- look at that dimensionality!
+
+---
+
+# Identifying biomarkers
+
+We can use the package to identify potential biomarkers:
+
+```{r eval=FALSE}
+biomarkerTMLEout <- biomarkertmle(Y = Y, # biomarkers
+                                  W = W, # baseline covariates
+                                  A = A, # exposure (benzene)
+                                  type = "exposure",
+                                  parallel = TRUE,
+                                  family = "gaussian",
+                                  g_lib = c("SL.glmnet", "SL.randomForest",
+                                            "SL.polymars", "SL.mean"),
+                                  Q_lib = c("SL.glmnet", "SL.randomForest",
+                                            "SL.nnet", "SL.mean")
+                                 )
+```
+
+```{r, echo=FALSE}
+data(biomarkertmleOut)
+```
+
+```{r}
+design <- as.data.frame(cbind(rep(1, nrow(Y)),
+                              as.numeric(A == max(unique(A)))))
+colnames(design) <- c("intercept", "Tx")
+limmaTMLEout <- limmatmle(biotmle = biomarkerTMLEout, IDs = NULL,
+                          designMat = design)
+```
+
+???
+
+- The procedure is quite resource-intensive as it evaluates the association of
+each potential biomarker (over $20,000$) with the exposure of interest A
+
+- ...while accounting for potential confounding based on the covariates included
+in W
+
+---
+
+class: inverse, middle, center
+
+# Visualizing results (from `biotmle`)
+
+---
+
+##### Unadjusted results from our test
+
+```{r, echo=FALSE}
+plot(x = limmaTMLEout, type = "pvals_raw")
 ```
 
 ---
 
-# R Plots
+##### Adjusted results from our test
 
-```{r cars, fig.height=4, dev='svg'}
-par(mar = c(4, 4, 1, .1))
-plot(cars, pch = 19, col = 'darkgray', las = 1)
-abline(fit, lwd = 2)
+```{r, echo=FALSE}
+plot(x = limmaTMLEout, type = "pvals_adj")
 ```
 
----
+???
 
-# HTML Widgets
-
-I have not thoroughly tested HTML widgets against **xaringan**. Some may work well, and some may not. It is a little tricky.
-
-Similarly, the Shiny mode (`runtime: shiny`) does not work. I might get these issues fixed in the future, but these are not of high priority to me. I never turn my presentation into a Shiny app. When I need to demonstrate more complicated examples, I just launch them separately. It is convenient to share slides with other people when they are plain HTML/JS applications.
-
-See the next page for two HTML widgets.
+- multiple testing
 
 ---
 
-```{r out.width='100%', fig.height=6, eval=require('leaflet')}
-library(leaflet)
-leaflet() %>% addTiles() %>% setView(-93.65, 42.0285, zoom = 17)
+##### Visualize results I
+
+```{r, echo=FALSE}
+volcano_biotmle(biotmle = limmaTMLEout)
 ```
 
+???
+
+- volcano plots are pretty standard
+
 ---
 
-```{r eval=require('DT'), tidy=FALSE}
-DT::datatable(
-  head(iris, 10),
-  fillContainer = FALSE, options = list(pageLength = 5)
-)
+##### Visualize results II
+
+```{r, echo=FALSE}
+heatmap_biotmle(x = limmaTMLEout, left.label.text.size = 2, designMat = design,
+                FDRcutoff = 0.05, top = 25)
 ```
-
----
-
-# Some Tips
-
-- When you use the "Infinite Moon Reader" addin in RStudio, your R session will be blocked by default. You can click the red button on the right of the console to stop serving the slides, or use the _daemonized_ mode so that it does not block your R session. To do the latter, you can set the option
-
-    ```r
-    options(servr.daemon = TRUE)
-    ```
-    
-    in your current R session, or in `~/.Rprofile` so that it is applied to all future R sessions. I do the latter by myself.
-    
-    To know more about the web server, see the [**servr**](https://github.com/yihui/servr) package.
-
----
-
-# Some Tips
-
-- Slides can be automatically played if you set the `autoplay` option under `nature`, e.g. go to the next slide every 30 seconds (this can be useful for lightning talks):
-
-    ```yaml
-    output:
-      xaringan::moon_reader:
-        nature:
-          autoplay: 30000
-    ```
-
---
-
-- The option `highlightLines: true` of `nature` will highlight code lines that start with `*` or are wrapped in `{{ }}`;
-
-    ```yaml
-    output:
-      xaringan::moon_reader:
-        nature:
-          highlightLines: true
-    ```
-
-    See examples on the next page.
-
----
-
-# Some Tips
-
-
-.pull-left[
-An example using a leading `*`:
-
-    ```r
-    if (TRUE) {
-    ** message("Very important!")
-    }
-    ```
-Output:
-```r
-if (TRUE) {
-* message("Very important!")
-}
-```
-
-This is invalid R code, so it is a plain fenced code block that is not executed.
-]
-
-.pull-right[
-An example using `{{}}`:
-
-    `r ''````{r tidy=FALSE}
-    if (TRUE) {
-    *{{ message("Very important!") }}
-    }
-    ```
-Output:
-```{r tidy=FALSE}
-if (TRUE) {
-{{ message("Very important!") }}
-}
-```
-
-It is valid R code so you can run it.
-]
-
----
-
-class: center
-
-# Hand seals (印)
-
-Press `h` or `?` to see the possible ninjutsu you can use in remark.js.
-
-![](https://upload.wikimedia.org/wikipedia/commons/7/7e/Mudra-Naruto-KageBunshin.svg)
 
 ---
 
@@ -326,4 +349,6 @@ class: center, middle
 
 Slides created via the R package [**xaringan**](https://github.com/yihui/xaringan).
 
-The chakra comes from [remark.js](https://remarkjs.com), [**knitr**](http://yihui.name/knitr), and [R Markdown](https://rmarkdown.rstudio.com).
+Powered by [remark.js](https://remarkjs.com),
+[**knitr**](http://yihui.name/knitr), and
+[R Markdown](https://rmarkdown.rstudio.com).
