@@ -22,8 +22,7 @@ class: center, middle, inverse, title-slide
 
 
 
-# How to access these slides
-## (and associated code)
+# Accessing these slides
 
 ### Via git:
 
@@ -32,8 +31,10 @@ class: center, middle, inverse, title-slide
 git clone https://github.com/nhejazi/talk_admitday.git
 ```
 
+--
+
 ### View online:
-https://goo.gl/HZzosu
+[goo.gl/HZzosu](https://goo.gl/HZzosu)
 
 ???
 
@@ -50,46 +51,77 @@ class: inverse, center, middle
 
 ---
 
-# Biological Sequencing Data
+# Biological Sequencing I
 
-- lots of data is constantly collected at the sequencing level...
-
-- experiments in health sciences, epidemiology...
+## Why?
 
 --
 
-- Popular biotechnology: (1) Microarrays, (2) RNA-Seq, (3) Single-Cell RNA-Seq
+- Probe biological and health processes at a very fine level
 
-- Querying different genomic processes: (1) DNA/RNA expression, (2) Protein
-expression, (3) Epigenetics: DNA Methylation
+--
+
+- Querying different genomic processes:
+  1. DNA/RNA expression
+  2. Protein expression
+  3. Epigenetics (e.g., DNA methylation)
+
+???
+
+- We are involved in research with health applications and the creation of
+biological domain knowledge.
+
+- Of the list given, the top 2 together comprise the "central dogma of molecular
+biology."
+
+- There's a fascinating array of processes to be studied and much room for
+statistical innovation.
+
+---
+
+# Biological Sequencing II
+
+## Who?
+
+--
+
+- Experimental scientists in
+  1. environmental epidemiology
+  2. molecular biology
+  3. bioengineering
+  4. neuroscience
+
+???
+
+- From the diversity of research areas, you're sure to find something
+interesting to work on.
+
+- Just a list I came up with off the top of my head...
+
+---
+
+# Biological Sequencing III
+
+## How?
+
+--
+
+- (some) Popular biotechnology:
+  1. Microarrays
+  2. RNA-Seq
+  3. Single-Cell RNA-Seq
 
 ???
 
 - There are numerous challenges in analyzing such data sets.
 
-- High-dimensional? `\(n \in (5, 200)\)`, `\(g \in (10000, 850000)\)`
-
-- one more talking point...
+- High-dimensional? `\(n \in (5, 200)\)`, `\(g \in (10000, 850000)\)`.
 
 ---
 
-# Central Dogma of Molecular Biology
+# Biological Sequencing Data
 
-- image here
-
-???
-
-- Why do we care about DNA, RNA, etc.?
-
-- talking point...
-
-- talking point...
-
----
-
-# Statistical Issues in Genomics
-
-Standard data matrix  vs. Genomic data matrix:
+Conventions differ in genomics:
 
 `\(\begin{bmatrix} x_{11} &amp; x_{12} &amp; x_{13} &amp; \dots &amp; x_{1g} \\ x_{21} &amp; x_{22} &amp; x_{23} &amp; \dots &amp; x_{2g} \\ \vdots &amp; \vdots &amp; \vdots &amp; \ddots &amp; \vdots \\ x_{n1} &amp; x_{n2} &amp; x_{n3} &amp; \dots &amp; x_{ng} \end{bmatrix} \xrightarrow[]{\text{transpose}} \begin{bmatrix} x_{11} &amp; x_{12} &amp; x_{13} &amp; \dots &amp; x_{1n} \\ x_{21} &amp; x_{22} &amp; x_{23} &amp; \dots &amp; x_{2n} \\ \vdots &amp; \vdots &amp; \vdots &amp; \ddots &amp; \vdots \\ x_{g1} &amp; x_{g2} &amp; x_{g3} &amp; \dots &amp; x_{gn} \end{bmatrix}\)`
 
@@ -97,13 +129,13 @@ __n.b.__, `\(n &lt;&lt; g\)`
 
 --
 
-- standard practice: _subjects in rows, genes in columns_
-
-- genomics standards: _genes in rows, subjects in columns_
+- standard practice: _subjects in rows, variables in columns_
 
 --
 
-- Wait, why did we transpose this matrix weirdly?
+- genomics: _genes in rows, subjects in columns_
+
+--
 
 - Why this aweful convention? 
 
@@ -113,46 +145,70 @@ __n.b.__, `\(n &lt;&lt; g\)`
 
 ???
 
-- talking point...
+- This threw me off when first starting to work in this area.
 
-- talking point...
+- We'd like to make claims about the genes, so why are they in the rows?
 
-- talking point...
+- Excel is the worst...you should never use it.
 
 ---
 
 # Targeted Learning
 
-- A: exposure/treatment (e.g., benzene)
-
-- Y: outcome of interest (e.g., gene expression)
-
-- W: baseline variables (e.g., age, sex, SES)
+- A framework for causal inference and variable importance analysis.
 
 --
 
-- __goal:__ estimate the effect of a treatment (A) on an outcome (Y) while
+- Let's represent observed data as `\(O = (W, A, Y)\)`
+
+--
+
+- `\(W\)`: baseline variables (e.g., age, sex, SES)
+
+
+--
+
+- `\(A\)`: exposure/treatment (e.g., benzene)
+
+--
+
+- `\(Y\)`: outcome of interest (e.g., gene expression)
+
+--
+
+- __goal:__ Estimate the effect of a treatment (A) on an outcome (Y) while
 controlling for baseline covariates (W)
 
-- causal inference and variable importance
-
 --
 
-- target parameters like the "average treatment effect" (ATE):
+- Target parameters like the "average treatment effect" (ATE):
 
 `$$\Psi(P_n^*) = E[E[Y \mid A = 1, W] - E[Y \mid A = 0, W]]$$`
 
 ???
 
-- talking points
+- All of this is covered in a series of 1st-year courses.
 
-- talking points
-
-- talking points
+- Significant area of research in our department (M. van der Laan, A. Hubbard,
+M. Petersen).
 
 ---
 
 # R package: `biotmle`
+
+- What does this package do?
+
+--
+
+_Biomarker identification, combining targeted learning with moderated (empirical
+Bayes) statistics to obtain conservative, robust estimates, with inference._
+
+--
+
+- Moderated statistics and targeted learning:
+
+`$$\tilde{t}_b = \frac{\sqrt{n}(\Psi_b(P_n^*) - \Psi_b(P_0))}{\tilde{S}^2_b},$$`
+--
 
 
 ```r
@@ -160,28 +216,10 @@ library(devtools)
 devtools::install_github("nhejazi/biotmle")
 ```
 
-- what does this package do?
-
-- who cares?
-
-???
-
-- talking point
-
-- talking point
-
----
-class: inverse, middle, center
-
-# Data Analysis with `biotmle`
-
----
-
-# Explore the data set
+--
 
 
 ```r
-library(dplyr)
 library(biotmle)
 ```
 
@@ -199,13 +237,17 @@ data(illuminaData)
 
 
 
-- load the data set
-
-- ...
-
 ???
 
-- This isn't too important, just click through
+- A working implementation of a targeted learning approach to biomarker
+discovery using moderated statistics.
+
+- We'll walk through analyzing some data...
+
+---
+class: inverse, middle, center
+
+# Data Analysis with `biotmle`
 
 ---
 
@@ -221,6 +263,12 @@ W &lt;- illuminaData %&gt;%
     sex = I(sex),
     smoking = I(smoking)
   )
+```
+
+--
+
+
+```r
 head(W)
 ```
 
@@ -250,12 +298,21 @@ head(W)
 A &lt;- illuminaData %&gt;%
   dplyr::select(which(colnames(.) %in% c("benzene")))
 A &lt;- A[, 1]
+```
+
+--
+
+
+```r
 unique(A)
 ```
 
 ```
 ## [1] 1 3 2
 ```
+
+--
+
 
 ```r
 table(A)
@@ -284,12 +341,21 @@ Y &lt;- illuminaData %&gt;%
   dplyr::select(which(colnames(.) %ni% c("age", "sex", "smoking", "benzene",
                                          "id")))
 geneIDs &lt;- colnames(Y)
+```
+
+--
+
+
+```r
 dim(Y)
 ```
 
 ```
 ## [1]   125 22177
 ```
+
+--
+
 
 ```r
 head(Y[, 1:7])
@@ -307,9 +373,9 @@ head(Y[, 1:7])
 
 ???
 
-- expression measures
+- Oh boy, look at that dimensionality!
 
-- look at that dimensionality!
+- Expression measures (from microarrays) seem pretty arbitrary.
 
 ---
 
@@ -334,6 +400,8 @@ biomarkerTMLEout &lt;- biomarkertmle(Y = Y, # biomarkers
 
 
 
+--
+
 
 ```r
 design &lt;- as.data.frame(cbind(rep(1, nrow(Y)),
@@ -352,22 +420,21 @@ each potential biomarker (over `\(20,000\)`) with the exposure of interest A
 in W
 
 ---
-
 class: inverse, middle, center
 
 # Visualizing results (from `biotmle`)
 
 ---
 
-##### Unadjusted results from our test
+# Unadjusted results from our test
 
-&lt;img src="2017_admitday_berkeley_files/figure-html/unnamed-chunk-11-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="2017_admitday_berkeley_files/figure-html/unnamed-chunk-16-1.png" style="display: block; margin: auto;" /&gt;
 
 ---
 
-##### Adjusted results from our test
+# Adjusted results from our test
 
-&lt;img src="2017_admitday_berkeley_files/figure-html/unnamed-chunk-12-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="2017_admitday_berkeley_files/figure-html/unnamed-chunk-17-1.png" style="display: block; margin: auto;" /&gt;
 
 ???
 
@@ -375,9 +442,9 @@ class: inverse, middle, center
 
 ---
 
-##### Visualize results I
+# Visualize results I
 
-&lt;img src="2017_admitday_berkeley_files/figure-html/unnamed-chunk-13-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="2017_admitday_berkeley_files/figure-html/unnamed-chunk-18-1.png" style="display: block; margin: auto;" /&gt;
 
 ???
 
@@ -385,12 +452,11 @@ class: inverse, middle, center
 
 ---
 
-##### Visualize results II
+# Visualize results II
 
-&lt;img src="2017_admitday_berkeley_files/figure-html/unnamed-chunk-14-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="2017_admitday_berkeley_files/figure-html/unnamed-chunk-19-1.png" style="display: block; margin: auto;" /&gt;
 
 ---
-
 class: center, middle
 
 # Thanks!
@@ -400,6 +466,23 @@ Slides created via the R package [**xaringan**](https://github.com/yihui/xaringa
 Powered by [remark.js](https://remarkjs.com),
 [**knitr**](http://yihui.name/knitr), and
 [R Markdown](https://rmarkdown.rstudio.com).
+
+---
+class: center, middle
+
+# Me
+
+slides: [goo.gl/HZzosu](https://goo.gl/HZzosu)
+
+[nimahejazi.org](http://nimahejazi.org)
+
+[stat.berkeley.edu/~nhejazi](https://www.stat.berkeley.edu/~nhejazi)
+
+_email:_ nhejazi -AT- berkeley -DOT- edu
+
+_twitter:_ [@nshejazi](https://twitter.com/nshejazi)
+
+_GitHub:_ [nhejazi](https://github.com/nhejazi)
     </textarea>
 <script src="libs/remark-latest.min.js"></script>
 <script>var slideshow = remark.create({
