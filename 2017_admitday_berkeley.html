@@ -24,17 +24,19 @@ class: center, middle, inverse, title-slide
 
 # Accessing these slides
 
+--
+
+### View online:
+[goo.gl/HZzosu](https://goo.gl/HZzosu)
+
+--
+
 ### Via git:
 
 
 ```bash
 git clone https://github.com/nhejazi/talk_admitday.git
 ```
-
---
-
-### View online:
-[goo.gl/HZzosu](https://goo.gl/HZzosu)
 
 ???
 
@@ -57,7 +59,11 @@ class: inverse, center, middle
 
 --
 
-- Probe biological and health processes at a very fine level
+- We can probe biological and health processes at a very fine level.
+
+--
+
+- Learn more about the molecular basis of health and disease.
 
 --
 
@@ -96,7 +102,7 @@ statistical innovation.
 - From the diversity of research areas, you're sure to find something
 interesting to work on.
 
-- Just a list I came up with off the top of my head...
+- Just a list I came up with off the top of my head...before my morning coffee.
 
 ---
 
@@ -107,7 +113,7 @@ interesting to work on.
 --
 
 - (some) Popular biotechnology:
-  1. Microarrays
+  1. Microarrays (genes, CpG sites, etc.)
   2. RNA-Seq
   3. Single-Cell RNA-Seq
 
@@ -115,7 +121,7 @@ interesting to work on.
 
 - There are numerous challenges in analyzing such data sets.
 
-- High-dimensional? `\(n \in (5, 200)\)`, `\(g \in (10000, 850000)\)`.
+- High-dimensional? personally, `\(n \in (4, 125)\)`, `\(g \in (10000, 850000)\)`.
 
 ---
 
@@ -137,19 +143,23 @@ __n.b.__, `\(n &lt;&lt; g\)`
 
 --
 
-- Why this aweful convention? 
+- Why this awful convention? 
 
 --
 
-- Thanks, Microsoft (Excel)...
+- Thanks, Microsoft (Excel)...the root of all evil (in data science).
+
+--
+
+- "Doing data science with spreadsheets is like drunk driving."
 
 ???
 
 - This threw me off when first starting to work in this area.
 
-- We'd like to make claims about the genes, so why are they in the rows?
+- We'd like to make claims about the genes, so why are they in the rows? Excel.
 
-- Excel is the worst...you should never use it.
+- Quote from podcast ("Not so standard deviations"), originally P.B. Stark.
 
 ---
 
@@ -207,7 +217,7 @@ Bayes) statistics to obtain conservative, robust estimates, with inference._
 
 - Moderated statistics and targeted learning:
 
-`$$\tilde{t}_b = \frac{\sqrt{n}(\Psi_b(P_n^*) - \Psi_b(P_0))}{\tilde{S}^2_b},$$`
+`$$\tilde{t}_b = \frac{\sqrt{n}(\Psi_b(P_n^*) - \Psi_b(P_0))}{\tilde{S}_b}$$`
 --
 
 
@@ -242,7 +252,7 @@ data(illuminaData)
 - A working implementation of a targeted learning approach to biomarker
 discovery using moderated statistics.
 
-- We'll walk through analyzing some data...
+- Next, we'll walk through analyzing some data.
 
 ---
 class: inverse, middle, center
@@ -284,9 +294,11 @@ head(W)
 
 ???
 
-- talking point
+- Our department revolves around using R. You're more than welcome to use
+whatever programming language you'd like, but you'll have to learn R if you want
+to communicate and collaborate.
 
-- talking point
+- Probably wouldn't hurt to start learning now, if you don't know it already.
 
 ---
 
@@ -326,9 +338,11 @@ table(A)
 
 ???
 
-- talking
+- We discretize the exposure/treatment to make it fit the form of the parameter
+that we saw before (the ATE).
 
-- talking
+- Decent distribution of observations across the levels of A (though there are
+fewer individuals in the highest exposure level).
 
 ---
 
@@ -373,9 +387,9 @@ head(Y[, 1:7])
 
 ???
 
-- Oh boy, look at that dimensionality!
+- Woah, look at that dimensionality!
 
-- Expression measures (from microarrays) seem pretty arbitrary.
+- Expression measures (from microarrays) appear arbitrary.
 
 ---
 
@@ -426,23 +440,29 @@ class: inverse, middle, center
 
 ---
 
-# Unadjusted results from our test
+# Unadjusted results from tests
 
 &lt;img src="2017_admitday_berkeley_files/figure-html/unnamed-chunk-16-1.png" style="display: block; margin: auto;" /&gt;
 
+???
+
+- still find a large number of biomarkers
+
 ---
 
-# Adjusted results from our test
+# Adjusted results from tests
 
 &lt;img src="2017_admitday_berkeley_files/figure-html/unnamed-chunk-17-1.png" style="display: block; margin: auto;" /&gt;
 
 ???
 
-- multiple testing
+- multiple testing correction (FDR control)
+
+- account for simultaneous tests
 
 ---
 
-# Visualize results I
+# Visualization I: Volcano Plot
 
 &lt;img src="2017_admitday_berkeley_files/figure-html/unnamed-chunk-18-1.png" style="display: block; margin: auto;" /&gt;
 
@@ -450,9 +470,12 @@ class: inverse, middle, center
 
 - volcano plots are pretty standard
 
+- our goal was to reduce the number of significant findings at a low fold change
+in the parameter of interest. It appears that we were successful.
+
 ---
 
-# Visualize results II
+# Visualization II: Heatmap
 
 &lt;img src="2017_admitday_berkeley_files/figure-html/unnamed-chunk-19-1.png" style="display: block; margin: auto;" /&gt;
 
@@ -461,7 +484,8 @@ class: center, middle
 
 # Thanks!
 
-Slides created via the R package [**xaringan**](https://github.com/yihui/xaringan).
+Slides created via the R package
+[**xaringan**](https://github.com/yihui/xaringan).
 
 Powered by [remark.js](https://remarkjs.com),
 [**knitr**](http://yihui.name/knitr), and
