@@ -1,4 +1,4 @@
-TITLE = 2017_admitday_berkeley
+TITLE = 2018_susa_berkeley
 
 web:
 	rsync -a --exclude='.git/' --chmod=go+r "$(pwd -P)" \

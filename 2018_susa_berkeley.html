@@ -1,23 +1,25 @@
----
-title: "Targeted Biomarker Discovery"
-subtitle: "Biostatistics Admit Day"
-author: "[Nima Hejazi](http://nimahejazi.org)"
-date: "20 March 2017"
-output:
-  xaringan::moon_reader:
-    lib_dir: libs
-    chakra: libs/remark-latest.min.js
-    css: ["default", "custom.css"]
-    nature:
-      highlightStyle: zenburn
-      highlightLines: true
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Targeted Biomarker Discovery</title>
+    <meta charset="utf-8">
+    <meta name="author" content="Nima Hejazi" />
+    <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <link rel="stylesheet" href="custom.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# Targeted Biomarker Discovery
+## SUSA Career Exploration
+### <a href="https://nimahejazi.org">Nima Hejazi</a>
+### 2018 Apr 18 (Wed), 19:00
+
 ---
 
-```{r knitr_setup, echo=FALSE, message=FALSE}
-knitr::opts_chunk$set(fig.width = 7, fig.height = 4.5,
-					  dpi = 300, fig.cap = "", fig.align = "center")
-showtext::showtext.opts(dpi = 300)
-```
+
+
 
 # Accessing these slides
 
@@ -30,17 +32,18 @@ showtext::showtext.opts(dpi = 300)
 
 ### Via git:
 
-```{bash, eval=FALSE}
-git clone https://github.com/nhejazi/talk_admitday.git
+
+```bash
+git clone -b https://github.com/nhejazi/talk_admitday.git susa-2018
 ```
 
 ???
 
 - This talk will focus on challenges in analyzing high-dimensional biological
-data, with a brief introduction to common problems.
+  data, with a brief introduction to common problems.
 
-- We will look at how standard approaches from statistical causal inference
-(esp., _Targeted Learning_) can be extended to this class of data.
+- We will look at how standard approaches from statistical causal inference,
+  machine learning, and Targeted Learning can be extended to this class of data.
 
 ---
 class: inverse, center, middle
@@ -117,7 +120,7 @@ interesting to work on.
 
 - There are numerous challenges in analyzing such data sets.
 
-- High-dimensional? personally, $n \in (4, 125)$, $g \in (10000, 850000)$.
+- High-dimensional? personally, `\(n \in (4, 125)\)`, `\(g \in (10000, 850000)\)`.
 
 ---
 
@@ -125,9 +128,9 @@ interesting to work on.
 
 Conventions differ in genomics:
 
-$\begin{bmatrix} x_{11} & x_{12} & x_{13} & \dots & x_{1g} \\ x_{21} & x_{22} & x_{23} & \dots & x_{2g} \\ \vdots & \vdots & \vdots & \ddots & \vdots \\ x_{n1} & x_{n2} & x_{n3} & \dots & x_{ng} \end{bmatrix} \xrightarrow[]{\text{transpose}} \begin{bmatrix} x_{11} & x_{12} & x_{13} & \dots & x_{1n} \\ x_{21} & x_{22} & x_{23} & \dots & x_{2n} \\ \vdots & \vdots & \vdots & \ddots & \vdots \\ x_{g1} & x_{g2} & x_{g3} & \dots & x_{gn} \end{bmatrix}$
+`\(\begin{bmatrix} x_{11} &amp; x_{12} &amp; x_{13} &amp; \dots &amp; x_{1g} \\ x_{21} &amp; x_{22} &amp; x_{23} &amp; \dots &amp; x_{2g} \\ \vdots &amp; \vdots &amp; \vdots &amp; \ddots &amp; \vdots \\ x_{n1} &amp; x_{n2} &amp; x_{n3} &amp; \dots &amp; x_{ng} \end{bmatrix} \xrightarrow[]{\text{transpose}} \begin{bmatrix} x_{11} &amp; x_{12} &amp; x_{13} &amp; \dots &amp; x_{1n} \\ x_{21} &amp; x_{22} &amp; x_{23} &amp; \dots &amp; x_{2n} \\ \vdots &amp; \vdots &amp; \vdots &amp; \ddots &amp; \vdots \\ x_{g1} &amp; x_{g2} &amp; x_{g3} &amp; \dots &amp; x_{gn} \end{bmatrix}\)`
 
-__n.b.__, $n << g$
+__n.b.__, `\(n &lt;&lt; g\)`
 
 --
 
@@ -165,20 +168,20 @@ __n.b.__, $n << g$
 
 --
 
-- Let's represent observed data as $O = (W, A, Y)$
+- Let's represent observed data as `\(O = (W, A, Y)\)`
 
 --
 
-- $W$: baseline variables (e.g., age, sex, SES)
+- `\(W\)`: baseline variables (e.g., age, sex, SES)
 
 
 --
 
-- $A$: exposure/treatment (e.g., benzene)
+- `\(A\)`: exposure/treatment (e.g., benzene)
 
 --
 
-- $Y$: outcome of interest (e.g., gene expression)
+- `\(Y\)`: outcome of interest (e.g., gene expression)
 
 --
 
@@ -189,7 +192,7 @@ controlling for baseline covariates (W)
 
 - Target parameters like the "average treatment effect" (ATE):
 
-$$\Psi(P_n^*) = E[E[Y \mid A = 1, W] - E[Y \mid A = 0, W]]$$
+`$$\Psi(P_n^*) = E[E[Y \mid A = 1, W] - E[Y \mid A = 0, W]]$$`
 
 ???
 
@@ -213,26 +216,33 @@ Bayes) statistics to obtain conservative, robust estimates, with inference._
 
 - Moderated statistics and targeted learning:
 
-$$\tilde{t}_b = \frac{\sqrt{n}(\Psi_b(P_n^*) - \Psi_b(P_0))}{\tilde{S}_b}$$
+`$$\tilde{t}_b = \frac{\sqrt{n}(\Psi_b(P_n^*) - \Psi_b(P_0))}{\tilde{S}_b}$$`
 --
 
-```{r, eval=FALSE}
+
+```r
 library(devtools)
 devtools::install_github("nhejazi/biotmle")
+devtools::install_github("nhejazi/biotmleData")
 ```
 
 --
 
-```{r}
+
+```r
 library(biotmle)
+```
+
+```
+## biotmle v:1.3.0: Moderated and Targeted Statistical Learning for Biomarker Discovery
+```
+
+```r
+library(biotmleData)
 data(illuminaData)
 ```
 
-```{r, echo=FALSE}
-library(dplyr)
-"%ni%" = Negate("%in%")
-subjIDs <- illuminaData$id
-```
+
 
 ???
 
@@ -250,12 +260,15 @@ class: inverse, middle, center
 
 # Baseline covariates (W)
 
-```{r}
+
+```r
 # W - age, sex, smoking
-W <- illuminaData %>%
-  dplyr::select(which(colnames(.) %in% c("age", "sex", "smoking"))) %>%
+W &lt;- illuminaData %&gt;%
+  colData() %&gt;%
+  data.frame() %&gt;%
+  dplyr::select(which(colnames(.) %in% c("age", "sex", "smoking"))) %&gt;%
   dplyr::mutate(
-    age = as.numeric((age > quantile(age, 0.25))),
+    age = as.numeric((age &gt; quantile(age, 0.25))),
     sex = I(sex),
     smoking = I(smoking)
   )
@@ -263,8 +276,19 @@ W <- illuminaData %>%
 
 --
 
-```{r}
+
+```r
 head(W)
+```
+
+```
+##   age sex smoking
+## 1   1   1       1
+## 2   1   1       1
+## 3   0   1       2
+## 4   1   2       2
+## 5   1   2       2
+## 6   1   2       1
 ```
 
 ???
@@ -279,23 +303,38 @@ to communicate and collaborate.
 
 # Exposure of interest (A)
 
-```{r}
+
+```r
 # A - benzene exposure (discretized)
-A <- illuminaData %>%
+A &lt;- illuminaData %&gt;%
+  colData() %&gt;%
+  data.frame() %&gt;%
   dplyr::select(which(colnames(.) %in% c("benzene")))
-A <- A[, 1]
+A &lt;- as.numeric(A[, 1])
 ```
 
 --
 
-```{r}
+
+```r
 unique(A)
 ```
 
+```
+## [1] 1 3 2
+```
+
 --
 
-```{r}
+
+```r
 table(A)
+```
+
+```
+## A
+##  1  2  3 
+## 42 59 24
 ```
 
 ???
@@ -310,24 +349,42 @@ fewer individuals in the highest exposure level).
 
 # Outcome of interest (Y)
 
-```{r}
+
+```r
 # Y - genes
-Y <- illuminaData %>%
-  dplyr::select(which(colnames(.) %ni% c("age", "sex", "smoking", "benzene",
-                                         "id")))
-geneIDs <- colnames(Y)
+Y &lt;- illuminaData %&gt;%
+  assay() %&gt;%
+  t() %&gt;%
+  data.frame()
+geneIDs &lt;- colnames(Y)
 ```
 
 --
 
-```{r}
+
+```r
 dim(Y)
 ```
 
+```
+## [1]   125 22177
+```
+
 --
 
-```{r}
+
+```r
 head(Y[, 1:7])
+```
+
+```
+##      X6960451 X2600731 X2120309 X7510608 X1570494 X6520451 X5960017
+## 3101 450.6910 2778.857 119.8120 203.8761 135.3883 222.8536 200.8315
+## 3102 339.4663 2856.571 113.6889 228.0108 126.4207 219.0222 185.6719
+## 3103 481.7867 4252.924 113.0603 184.6628 165.4673 215.8639 190.5513
+## 3108 284.1533 1477.202 101.9724 199.9513 110.4363 172.2799 151.1723
+## 3109 334.6466 1316.800 114.9128 204.2139 127.4630 210.0835 194.2244
+## 3110 415.4404 3646.593 125.2571 220.9299 145.5556 222.3194 179.5192
 ```
 
 ???
@@ -342,8 +399,9 @@ head(Y[, 1:7])
 
 We can use the package to identify potential biomarkers:
 
-```{r eval=FALSE}
-biomarkerTMLEout <- biomarkertmle(Y = Y, # biomarkers
+
+```r
+biomarkerTMLEout &lt;- biomarkertmle(Y = Y, # biomarkers
                                   W = W, # baseline covariates
                                   A = A, # exposure (benzene)
                                   type = "exposure",
@@ -356,24 +414,22 @@ biomarkerTMLEout <- biomarkertmle(Y = Y, # biomarkers
                                  )
 ```
 
-```{r, echo=FALSE}
-data(biomarkertmleOut)
-```
+
 
 --
 
-```{r}
-design <- as.data.frame(cbind(rep(1, nrow(Y)),
+
+```r
+design &lt;- as.data.frame(cbind(rep(1, nrow(Y)),
                               as.numeric(A == max(unique(A)))))
-colnames(design) <- c("intercept", "Tx")
-limmaTMLEout <- limmatmle(biotmle = biomarkerTMLEout, IDs = NULL,
-                          designMat = design)
+colnames(design) &lt;- c("intercept", "Tx")
+limmaTMLEout &lt;- modtest_ic(biotmle = biomarkerTMLEout)
 ```
 
 ???
 
 - The procedure is quite resource-intensive as it evaluates the association of
-each potential biomarker (over $20,000$) with the exposure of interest A
+each potential biomarker (over `\(20,000\)`) with the exposure of interest A
 
 - ...while accounting for potential confounding based on the covariates included
 in W
@@ -387,9 +443,7 @@ class: inverse, middle, center
 
 # Unadjusted results from tests
 
-```{r, echo=FALSE}
-plot(x = limmaTMLEout, type = "pvals_raw")
-```
+&lt;img src="2018_susa_berkeley_files/figure-html/unnamed-chunk-16-1.png" style="display: block; margin: auto;" /&gt;
 
 ???
 
@@ -399,9 +453,7 @@ plot(x = limmaTMLEout, type = "pvals_raw")
 
 # Adjusted results from tests
 
-```{r, echo=FALSE}
-plot(x = limmaTMLEout, type = "pvals_adj")
-```
+&lt;img src="2018_susa_berkeley_files/figure-html/unnamed-chunk-17-1.png" style="display: block; margin: auto;" /&gt;
 
 ???
 
@@ -411,11 +463,9 @@ plot(x = limmaTMLEout, type = "pvals_adj")
 
 ---
 
-# Visualization I: Volcano Plot
+# Visualization I: Heatmap
 
-```{r, echo=FALSE}
-volcano_biotmle(biotmle = limmaTMLEout)
-```
+&lt;img src="2018_susa_berkeley_files/figure-html/unnamed-chunk-18-1.png" style="display: block; margin: auto;" /&gt;
 
 ???
 
@@ -426,12 +476,9 @@ in the parameter of interest. It appears that we were successful.
 
 ---
 
-# Visualization II: Heatmap
+# Visualization II: Volcano Plot
 
-```{r, echo=FALSE}
-heatmap_biotmle(x = limmaTMLEout, left.label.text.size = 2, designMat = design,
-                FDRcutoff = 0.05, top = 25)
-```
+&lt;img src="2018_susa_berkeley_files/figure-html/unnamed-chunk-19-1.png" style="display: block; margin: auto;" /&gt;
 
 ---
 class: center, middle
@@ -450,14 +497,48 @@ class: center, middle
 
 # Me
 
-slides: [goo.gl/HZzosu](https://goo.gl/HZzosu)
+[nimahejazi.org](https://nimahejazi.org)
 
-[nimahejazi.org](http://nimahejazi.org)
-
-[stat.berkeley.edu/~nhejazi](https://www.stat.berkeley.edu/~nhejazi)
+[statistics.berkeley.edu/~nhejazi](https://statistics.berkeley.edu/~nhejazi)
 
 _email:_ nhejazi -AT- berkeley -DOT- edu
 
 _twitter:_ [@nshejazi](https://twitter.com/nshejazi)
 
 _GitHub:_ [nhejazi](https://github.com/nhejazi)
+    </textarea>
+<script src="libs/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "zenburn",
+"highlightLines": true
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function() {
+  var d = document, s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})();</script>
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  tex2jax: {
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+  }
+});
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
